@@ -12,6 +12,9 @@ img{
   border-radius: 5px;
   padding: 5px;
 }
+footer{
+  text-align: center;
+}
 img:hover{
   background-color: hsl(28, 100%, 62%);
 }

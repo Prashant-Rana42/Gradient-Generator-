@@ -85,6 +85,7 @@ function ColorPicker(){
     
 
     return(
+        <>
         <div className='container'>
         <h1>Linear Gradient Generator</h1><br/>
         <div ref={colorViewRef} className="colorView" style={{background:`linear-gradient(${degree}deg, ${color1} ${stop1}%, ${color2} ${stop2}%)`, width:`${width}px` ,height:`${height}px`}}></div>
@@ -132,6 +133,9 @@ function ColorPicker(){
         <button onClick={saveAsImage}>Save</button>
         </div>
         </div>
+        <br/>
+        <footer><p>&copy; By Prashant Rana</p></footer>
+        </>
     );
 }
 

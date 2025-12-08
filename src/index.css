@@ -1,0 +1,107 @@
+*{
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  color: hsl(0, 0%, 20%);
+}
+img{
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: hsl(28, 100%, 58%);
+  border-radius: 5px;
+  padding: 5px;
+}
+img:hover{
+  background-color: hsl(28, 100%, 62%);
+}
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  justify-content: center;
+}
+.colorView{
+  margin-bottom: 1rem;
+  width: 25rem;
+  height: 25rem;
+  box-shadow: 5px 5px 5px hsl(0, 0%, 50%);
+}
+.colorPicker{
+  height: 2rem;
+  width: 3rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+.selectordiv{
+ display: flex;
+ gap: 1rem;
+ margin: .5rem;
+ flex-direction: row;
+ height: 1.3rem;
+ align-items: center;
+}
+.gradientSlider{
+  border-radius: 4px;
+  display: flex;
+}
+.gradientSlider input{
+  cursor: pointer;
+  width: 15rem;
+  height: 1.5rem;
+  box-shadow: 5px 5px 5px hsl(0, 0%, 50%);
+  border-radius: 4px;
+  border: 1px solid hsl(0, 0%, 20%);
+}
+.number, button{
+  height: 1.7rem;
+  width: 3rem;
+  padding: .2rem;
+  cursor: pointer;
+}
+.number2{
+  width: 5rem;
+}
+button{
+  border-radius: 5px;
+  border: none;
+  width: 4.5rem;
+  height: 2.5rem;
+  background-color: hsl(145, 63%, 49%);
+  color: white;
+  font-size: 1.3rem;
+}
+button:hover{
+  background-color: hsl(145, 63%, 52%);
+  transform: scale(1.05);
+}
+input[type=range] {
+    appearance: none;
+    background: transparent; 
+}
+input[type=range]::-webkit-slider-thumb {
+    appearance: none; 
+    height: 1.5rem;          
+    width: 1.5rem;      
+    border-radius: 10%;
+    background-color: white;
+    box-shadow: 2px 1px 3px hsl(0, 0%, 50%);
+    border: 1px solid hsl(0, 0%, 20%);
+}
+input[type=range]::-webkit-slider-thumb:hover, .colorPicker:hover, img:hover {
+    transform: scale(1.05);
+}
+
+/* this is for firefox */
+input[type=range]::-moz-range-thumb {
+    height: 1.5rem;          
+    width: 1.5rem;      
+    border-radius: 10%;
+    background-color: white;
+    box-shadow: 2px 1px 3px hsl(0, 0%, 50%);
+    border: 1px solid hsl(0, 0%, 20%);
+    /* Firefox requires appearance: none here too to get rid of default border */
+    appearance: none;
+}

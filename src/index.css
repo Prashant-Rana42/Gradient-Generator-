@@ -32,6 +32,7 @@ img:hover{
   width: 25rem;
   height: 25rem;
   box-shadow: 5px 5px 5px hsl(0, 0%, 50%);
+  transition: 0.25s ease;
 }
 .colorPicker{
   height: 2rem;

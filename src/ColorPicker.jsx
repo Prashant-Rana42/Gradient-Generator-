@@ -1,6 +1,20 @@
-import React,{useState, useRef} from 'react'
-import Html2Canvas from 'html2canvas'
+import {useState, useRef} from 'react'
 import Shuffle from './assets/shuffle.png'
+
+// Helper function to throttle state updates
+const throttle = (func, limit) => {
+  let inThrottle;
+  return function() {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+};
+
 
 function ColorPicker(){
 
@@ -18,47 +32,45 @@ function ColorPicker(){
     const updateColor1 = (e)=> setColor1(e.target.value);
     const updateColor2 = (e)=> setColor2(e.target.value);
 
-    const updateDegree = (e)=> setDegree(e.target.value);
+    // --- Original handler implementations moved to helper variables ---
+    const setDegreeValue = (e)=> setDegree(e.target.value);
+    const setStop1Value = (e) => setStop1(e.target.value);
+    const setStop2Value = (e) => setStop2(100-e.target.value);
+    // ---
 
-    const updateStop1 = (e) => setStop1(e.target.value);
-    const updateStop2 = (e) => setStop2(100-e.target.value);
+    // --- Public functions now use throttle wrapper but retain original names ---
+    const updateDegree = throttle(setDegreeValue, 50);
+    const updateStop1 = throttle(setStop1Value, 50);
+    const updateStop2 = throttle(setStop2Value, 50);
+    // ---
 
     const updateRatio = (e)=> {
         const [widthx,heightx] = e.target.value.split(":");
-        setWidth(Math.round(400*widthx));
-        setHeight(Math.round(400*heightx));
+        setWidth(Math.round(400*parseFloat(widthx)));
+        setHeight(Math.round(400*parseFloat(heightx)));
     };
 
     const handleScaleChange = (e) => {
         const value = parseFloat(e.target.value); 
-        // The logic runs either on change (while typing) or on blur (when focus leaves)
         if (e.type === 'blur' || (value >= 1 && value <= 20)) {
             setScale(value >= 20 ? 20 : value <= 0 || isNaN(value) ? 1 : value);
         } else {
-            // Optional: allow typing outside bounds temporarily during change event
             setScale(e.target.value); 
         }
     };
-
     
-    const saveAsImage = () => {//Ai generated function
+    const saveAsImage = async () => {
+        const Html2Canvas = (await import('html2canvas')).default;
+
         if (colorViewRef.current) {
             Html2Canvas(colorViewRef.current, { 
-                width,      
-                height, 
-                scale: scale,               
-                useCORS: true,
-                backgroundColor: null,
-                logging: false, 
-                removeContainer: true // A common fix for weird edge artifacts
+                width, height, scale: scale, useCORS: true, backgroundColor: null, logging: false, removeContainer: true
             }).then(canvas => {
-                // Creates an image URL from the canvas data
                 const image = canvas.toDataURL("image/png");
-                // Create a temporary link element to trigger the download
                 const link = document.createElement('a');
                 link.href = image;
-                link.download = `${color1}-${color2}-${degree}deg.png`; // Suggested filename
-                link.click(); // Programmatically click the link to start download
+                link.download = `${color1}-${color2}-${degree}deg.png`;
+                link.click();
             });
         }
     };
@@ -89,12 +101,12 @@ function ColorPicker(){
         <div className='container'>
         <h1>Linear Gradient Generator</h1><br/>
         <div ref={colorViewRef} className="colorView" style={{background:`linear-gradient(${degree}deg, ${color1} ${stop1}%, ${color2} ${stop2}%)`, width:`${width}px` ,height:`${height}px`}}></div>
-        <h4>{color1}, {color2}, {degree}deg, ({width*scale} x {height*scale})px</h4><br/>
+        <h4>{color1}, {color2}, {degree}deg, ({Math.round(width*scale)} x {Math.round(height*scale)})px</h4><br/>
             
         <div className='selectordiv'>
             <h4>Color 1:</h4>
             <input className='colorPicker' value={color1} onChange={updateColor1} type="color"/>
-            <div className='gradientSlider' style={{background:`linear-gradient(${90}deg, white 0%, ${color1} ${stop2}%)`}}>
+            <div className='gradientSlider' style={{background:`linear-gradient(${90}deg, white 0%, ${color1} 100%)`}}>
             <input onChange={updateStop1} value={stop1} type="range" min='0' max='49' step='1'/>
             </div>
         </div>
@@ -102,22 +114,22 @@ function ColorPicker(){
         <div className='selectordiv'>
             <h4>Color 2:</h4>
             <input className='colorPicker' value={color2} onChange={updateColor2} type="color"/>
-            <div className='gradientSlider' style={{background:`linear-gradient(${90}deg, white 0%, ${color2} ${stop2}%)`}}>
+            <div className='gradientSlider' style={{background:`linear-gradient(${90}deg, white 0%, ${color2} 100%)`}}>
             <input onChange={updateStop2} value={100-stop2} type="range" min='0' max='49' step='1'/>
         </div>
 
         </div>
         <div className='selectordiv'>
             <h4>Degree:</h4>
-            <input className='number' min='1' max='360' type="number" value={degree} onChange={updateDegree} />
+            <input className='number' min='1' max='360' type="number" value={degree} onChange={setDegreeValue} />
             <div className='gradientSlider'>
-            <input className='gradientSlider' onChange={updateDegree} value={degree} type="range" min='0' max='360' step='1'/>
+            <input onChange={updateDegree} value={degree} type="range" min='0' max='360' step='1'/>
             </div>
         </div>
         <br/>
         <div className='selectordiv'>
             <h4>Ratio:</h4>
-        <select className='number number2' onChange={updateRatio}>
+        <select className='number number2' onChange={updateRatio} defaultValue="1:1">
             <option value="1:1">1:1</option>
             <option value="1:0.75">4:3</option>
             <option value="1:0.67">3:2</option>

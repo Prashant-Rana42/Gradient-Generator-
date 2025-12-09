@@ -11,12 +11,14 @@ img{
   background-color: hsl(28, 100%, 58%);
   border-radius: 5px;
   padding: 5px;
+  box-shadow: 2px 2px 2px hsl(0, 0%, 50%);
 }
 footer{
   text-align: center;
 }
 img:hover{
   background-color: hsl(28, 100%, 62%);
+  box-shadow: 3px 3px 3px hsl(0, 0%, 50%);
 }
 .container{
   display: flex;
@@ -75,10 +77,12 @@ button{
   background-color: hsl(145, 63%, 49%);
   color: white;
   font-size: 1.3rem;
+  box-shadow: 2px 2px 2px hsl(0, 0%, 50%);
 }
 button:hover{
   background-color: hsl(145, 63%, 52%);
   transform: scale(1.05);
+  box-shadow: 3px 3px 3px hsl(0, 0%, 50%);
 }
 input[type=range] {
     appearance: none;

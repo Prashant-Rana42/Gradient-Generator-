@@ -44,8 +44,8 @@ A simple and customizable **React-based gradient generator** that allows users t
 ### Install & Run
 ```bash
 # clone
-git clone <your-repo-url>
-cd <your-repo-folder>
+git clone https://github.com/Prashant-Rana42/Gradient-Generator-.git
+cd Gradient-Generator
 
 # install
 npm install
